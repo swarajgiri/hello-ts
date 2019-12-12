@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  web-server:
+    build:
+      context: .
+    container_name: web-app
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/app
+      - PORT=8080
+    depends_on:
+      - mongo
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    command: yarn start
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
